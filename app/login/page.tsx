@@ -11,7 +11,7 @@ export default function LoginPage() {
         {/* Header Form */}
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-medium text-gray-700">Đăng nhập</h2>
-          <Link href="/" className="text-xl font-bold text-[#ee4d2d]">K - Market</Link>
+          <Link href="/" className="text-xl font-bold text-[#ee4d2d] hover:opacity-80 hover:-translate-x-1">K - Market</Link>
         </div>
 
         {/* Form */}
@@ -26,7 +26,7 @@ export default function LoginPage() {
             placeholder="Mật khẩu"
             className="w-full border border-gray-300 p-3 rounded-sm outline-none focus:border-gray-500 text-sm"
           />
-          
+
           <button className="w-full bg-[#ee4d2d] text-white py-3 rounded-sm uppercase font-medium hover:opacity-90 transition-all">
             Đăng nhập
           </button>
@@ -46,21 +46,21 @@ export default function LoginPage() {
 
           <div className="grid grid-cols-2 gap-4 mt-6">
             <button className="flex items-center justify-center gap-2 border border-gray-300 p-2 rounded-sm hover:bg-gray-50">
-                <FaFacebook className="text-2xl cursor-pointer text-blue-700" />
+              <FaFacebook className="text-2xl cursor-pointer text-blue-700" />
               <i className="fa-brands fa-facebook text-blue-700"></i> Facebook
             </button>
             <button className="flex items-center justify-center gap-2 border border-gray-300 p-2 rounded-sm hover:bg-gray-50">
-                <FcGoogle className="text-2xl" />
+              <FcGoogle className="text-2xl" />
               <i className="fa-brands fa-google text-red-500 text-xl"></i> Google
             </button>
           </div>
         </div>
 
         <p className="text-center mt-8 text-sm text-gray-400">
-          Bạn mới biết đến K-Market? 
+          Bạn mới biết đến K-Market?
           <Link href="/register" className="text-[#ee4d2d] font-medium ml-1">Đăng ký</Link>
         </p>
       </div>
-    </div>
+    </div >
   );
 }

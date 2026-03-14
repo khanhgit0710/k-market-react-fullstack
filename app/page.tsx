@@ -1,4 +1,5 @@
 import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { products, categories } from "@/data/products";
 
 export default function Home() {
@@ -21,13 +22,13 @@ export default function Home() {
               ))}
             </ul>
           </div>
-        </aside>
+        </aside> 
 
         {/* Product List - Cột phải (10 phần) */}
         <div className="w-10/12">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {products.map((item) => (
-              <div key={item.id} className="bg-white rounded-sm shadow-sm hover:shadow-md hover:-translate-y-[1px] transition-all cursor-pointer group">
+              <div key={item.id} className="bg-white rounded-sm shadow-sm hover:shadow-md hover:-translate-y-1 transition-all cursor-pointer group">
                 {/* Image */}
                 <div 
                   className="w-full h-48 bg-cover bg-center" 
@@ -53,6 +54,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

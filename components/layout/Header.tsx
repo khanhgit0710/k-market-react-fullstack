@@ -4,7 +4,6 @@ import Link from "next/link";
 export default function Header() {
   return (
     <header className="bg-[#ee4d2d] text-white w-full shadow-md">
-      {/* Top Navbar */}
       <div className="max-w-7xl mx-auto flex justify-between py-2 text-[13px] font-light">
         <div className="flex gap-4 items-center">
           <span className="hover:opacity-80 cursor-pointer border-r pr-4 border-white/30">Mời vào ứng dụng K-Market</span>
@@ -26,9 +25,8 @@ export default function Header() {
         </ul>
       </div>
 
-      {/* Search & Logo Area */}
+
       <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-2">
-        {/* Logo */}
         <div className="hover:opacity-50 flex items-center gap-2 text-3xl py- font-bold cursor-pointer">
           <FaShoppingBag />
           <span className="hover:opacity-90  text-xl text-center">K - Market</span>

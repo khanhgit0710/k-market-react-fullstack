@@ -9,7 +9,7 @@ export default function RegisterPage() {
                 {/* Header Form */}
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-medium text-gray-700">Đăng ký</h2>
-                    <Link href="/" className="text-xl font-bold text-[#ee4d2d]">K - Market</Link>
+                    <Link href="/" className="text-xl font-bold text-[#ee4d2d] hover:opacity-80 hover:-translate-x-1">K - Market</Link>
                 </div>
 
                 {/* Form */}
@@ -41,7 +41,7 @@ export default function RegisterPage() {
                 </form>
 
                 <p className="text-center mt-8 text-sm text-gray-400">
-                    Bạn đã có tài khoản? 
+                    Bạn đã có tài khoản?
                     <Link href="/login" className="text-[#ee4d2d] font-medium ml-1">Đăng nhập</Link>
                 </p>
             </div>
