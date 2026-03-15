@@ -1,17 +1,27 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || "";
+const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
-  throw new Error("Vui lòng định nghĩa MONGODB_URI trong file .env.local");
+  throw new Error("Vui lòng check file .env.local và dán MONGODB_URI vào!");
 }
 
-export const connectToDatabase = async () => {
-  try {
-    if (mongoose.connection.readyState >= 1) return;
-    await mongoose.connect(MONGODB_URI);
-    console.log("✅ Kết nối MongoDB thành công!");
-  } catch (error) {
-    console.log("❌ Lỗi kết nối MongoDB:", error);
+let cached = (global as any).mongoose;
+
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
+}
+
+async function connectDB() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
+      return mongoose;
+    });
   }
-};
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+export default connectDB;
