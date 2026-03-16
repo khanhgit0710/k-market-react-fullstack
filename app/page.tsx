@@ -5,15 +5,11 @@ import Link from "next/link";
 
 async function getProducts(page: string, category: string) {
   try {
-    // 💡 TỰ ĐỘNG NHẬN DIỆN MÔI TRƯỜNG
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
-      : "http://localhost:3000";
-
+    // 💡 DÁN THẲNG LINK VERCEL CỦA ÔNG VÀO ĐÂY LUÔN CHO CHẮC CÚ
+    const baseUrl = "https://k-market-react-fullstack.vercel.app";
+    
     const catParam = (category && category !== "Tất cả") ? `&category=${encodeURIComponent(category)}` : "";
     const url = `${baseUrl}/api/products?page=${page}${catParam}`;
-    
-    console.log("--- FETCHING AT URL: ---", url);
 
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) return { products: [], totalPages: 1 };
