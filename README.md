@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛒 K-Market - Fullstack E-commerce Platform (Next.js 15)
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
-First, run the development server:
+## 🚀 Project Overview
+**K-Market** is a high-performance e-commerce storefront built with **Next.js 15 App Router** and **MongoDB Atlas**. This project demonstrates advanced frontend logic, RESTful API integration, and modern UI/UX principles.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> **Status:** 🏗️ Phase 2: Core Logic & Database Integration (Targeting MVP by March 20)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Key Features
+- **⚡ Next.js 15 Power:** Utilizing Server Components for maximum performance.
+- **🛡️ Fullstack with MongoDB:** Real data fetching from Atlas Cloud via RESTful API routes.
+- **🔍 Smart Pagination:** Custom-built pagination logic with "..." support for clean UX.
+- **📱 Responsive Layout:** Pixel-perfect UI on Mobile, Tablet, and Desktop using Tailwind v4.
+- **🛠️ Type-Safe:** 100% TypeScript for robust development and bug prevention.
+- **🛍️ Dynamic Category Filtering:** Instant product filtering using URL search parameters.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Tech Stack
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **State Management:** Zustand (Planned for Cart)
+- **Database:** MongoDB Atlas (Mongoose ODM)
+- **Deployment:** Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📂 Project Structure
+```text
+app/
+├── api/            # RESTful API Route Handlers
+├── product/        # Dynamic Route [id] for Details
+├── components/     # Layout & Reusable UI components
+├── lib/            # MongoDB connection & Utilities
+└── models/         # Mongoose Data Schemas
