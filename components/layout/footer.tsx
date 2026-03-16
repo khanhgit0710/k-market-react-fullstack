@@ -46,7 +46,7 @@ export default function Footer() {
                     </div>
 
                     {/* Cột 4 */}
-                    <div className="font-bold text-gray-800 mb-4 uppercase text-sm tracking-wider">
+                    <div className="font-bold text-gray-800 mb-4 uppercase text-sm tracking-wider flex flex-col items-center md:items-start">
                         <h3 className="text-sm font-bold text-gray-700">KẾT NỐI VỚI CHÚNG TÔI</h3>
                         <ul className="flex justify-item-center item-between mt-4 gap-4">
                             <li className="text-2xl text-blue-600 cursor-pointer hover:scale-110 transition-transform">
