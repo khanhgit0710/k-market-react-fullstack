@@ -4,7 +4,13 @@ import AddToCart from "@/components/product/AddToCart";
 
 async function getProductDetail(id: string) {
   try {
-    const res = await fetch(`http://localhost:3000/api/products/${id}`, { cache: "no-store" });
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+  : "http://localhost:3000";
+
+// Rồi sửa cái fetch thành:
+  const res = await fetch(`${baseUrl}/api/products...`, { cache: "no-store" });
+
     if (!res.ok) return null;
     return res.json();
   } catch (error) { return null; }

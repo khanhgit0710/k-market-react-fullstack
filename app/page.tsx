@@ -5,23 +5,32 @@ import Link from "next/link";
 
 async function getProducts(page: string, category: string) {
   try {
+    // 💡 TỰ ĐỘNG NHẬN DIỆN MÔI TRƯỜNG
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+      : "http://localhost:3000";
+
     const catParam = (category && category !== "Tất cả") ? `&category=${encodeURIComponent(category)}` : "";
-    const url = `http://localhost:3000/api/products?page=${page}${catParam}`;
+    const url = `${baseUrl}/api/products?page=${page}${catParam}`;
+    
+    console.log("--- FETCHING AT URL: ---", url);
+
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) return { products: [], totalPages: 1 };
-    const result = await res.json();
-    return {
-      products: result.products || [],
-      totalPages: result.totalPages || 1
-    };
+    return res.json();
   } catch (error) {
     return { products: [], totalPages: 1 };
   }
 }
 
+// Tương tự cho hàm getCategories
 async function getCategories() {
   try {
-    const res = await fetch("http://localhost:3000/api/categories", { cache: "no-store" });
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+      : "http://localhost:3000";
+
+    const res = await fetch(`${baseUrl}/api/categories`, { cache: "no-store" });
     if (!res.ok) return ["Tất cả"];
     return res.json();
   } catch (error) {
