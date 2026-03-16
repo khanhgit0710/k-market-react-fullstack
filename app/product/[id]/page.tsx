@@ -4,12 +4,12 @@ import AddToCart from "@/components/product/AddToCart";
 
 async function getProductDetail(id: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
-  : "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      : "http://localhost:3000";
 
-// Rồi sửa cái fetch thành:
-  const res = await fetch(`${baseUrl}/api/products...`, { cache: "no-store" });
+    // Rồi sửa cái fetch thành:
+    const res = await fetch(`${baseUrl}/api/products...`, { cache: "no-store" });
 
     if (!res.ok) return null;
     return res.json();
