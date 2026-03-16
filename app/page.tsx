@@ -5,11 +5,15 @@ import Link from "next/link";
 
 async function getProducts(page: string, category: string) {
   try {
-    // 💡 DÁN THẲNG LINK VERCEL CỦA ÔNG VÀO ĐÂY LUÔN CHO CHẮC CÚ
-    const baseUrl = "https://k-market-react-fullstack.vercel.app";
-    
+    // 💡 TỰ ĐỘNG NHẬN DIỆN MÔI TRƯỜNG
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+      : "http://localhost:3000";
+
     const catParam = (category && category !== "Tất cả") ? `&category=${encodeURIComponent(category)}` : "";
     const url = `${baseUrl}/api/products?page=${page}${catParam}`;
+    
+    console.log("--- FETCHING AT URL: ---", url);
 
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) return { products: [], totalPages: 1 };
@@ -22,14 +26,21 @@ async function getProducts(page: string, category: string) {
 // Tương tự cho hàm getCategories
 async function getCategories() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
-      : "http://localhost:3000";
+    // 💡 DÁN THẲNG LINK VERCEL CHO NÓ HẾT CÃI
+    const baseUrl = "https://k-market-react-fullstack.vercel.app";
 
     const res = await fetch(`${baseUrl}/api/categories`, { cache: "no-store" });
-    if (!res.ok) return ["Tất cả"];
-    return res.json();
+    
+    if (!res.ok) {
+      console.error("API Categories báo lỗi");
+      return ["Tất cả"];
+    }
+    
+    const data = await res.json();
+    console.log("DANH MỤC VỀ RỒI:", data);
+    return data;
   } catch (error) {
+    console.error("Lỗi hụt Categories:", error);
     return ["Tất cả"];
   }
 }
