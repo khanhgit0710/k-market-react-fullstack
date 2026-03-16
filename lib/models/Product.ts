@@ -7,6 +7,7 @@ const ProductSchema = new Schema({
   newPrice: { type: String, required: true },
   sold: { type: String },
   location: { type: String },
+  description: { type: String, required: true },
   category: { type: String, required: true },
 });
 

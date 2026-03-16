@@ -1,49 +1,48 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import AddToCart from "@/components/product/AddToCart";
 
 async function getProductDetail(id: string) {
   try {
-    // Gọi đến chính cái API mình vừa thông nòng lúc nãy
     const res = await fetch(`http://localhost:3000/api/products/${id}`, { cache: "no-store" });
     if (!res.ok) return null;
     return res.json();
-  } catch (error) {
-    console.error("Lỗi fetch chi tiết:", error);
-    return null;
-  }
+  } catch (error) { return null; }
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const product = await getProductDetail(id);
 
-  if (!product) {
-    return <div className="text-center py-20 font-bold text-red-500">Sản phẩm không tồn tại trong Database!</div>;
-  }
+  if (!product) return <div className="text-center py-20 font-bold">404 - Không thấy hàng rồi ông giáo!</div>;
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen flex flex-col">
+    <div className="bg-[#f5f5f5] min-h-screen flex flex-col font-sans">
       <Header />
-      <main className="max-w-[1200px] mx-auto py-10 px-4 flex-grow w-full">
-        <div className="bg-white p-6 rounded-sm shadow-sm flex flex-col md:flex-row gap-10">
+      <main className="max-w-[1200px] mx-auto py-6 px-4 flex-grow w-full">
+        {/* PHẦN TRÊN: ẢNH VÀ NÚT MUA */}
+        <div className="bg-white p-5 rounded-sm shadow-sm flex flex-col md:flex-row gap-10">
           <div className="w-full md:w-[450px]">
-            <img src={product.image} alt={product.name} className="w-full border border-gray-100 shadow-sm" />
+            <img src={product.image} alt={product.name} className="w-full border border-gray-100" />
           </div>
-          <div className="flex-1 flex flex-col gap-6">
-            <h1 className="text-2xl font-medium text-gray-800">{product.name}</h1>
-            <div className="bg-gray-50 p-6 flex items-center gap-5 rounded-sm border-l-4 border-orange-500">
-              <span className="text-gray-400 line-through text-lg">{product.oldPrice}</span>
-              <span className="text-4xl text-[#ee4d2d] font-bold">{product.newPrice}</span>
+          <div className="flex-1 flex flex-col gap-5">
+            <h1 className="text-xl font-medium text-gray-800 uppercase">{product.name}</h1>
+            <div className="bg-gray-50 p-5 flex items-center gap-5 rounded-sm">
+              <span className="text-gray-400 line-through text-base">{product.oldPrice}</span>
+              <span className="text-3xl text-[#ee4d2d] font-bold">{product.newPrice}</span>
             </div>
-            <p className="text-gray-500 text-sm">Vị trí: {product.location} | Đã bán: {product.sold}</p>
-            <div className="mt-auto flex gap-4">
-              <button className="px-8 py-4 border border-[#ee4d2d] bg-[#ff57221a] text-[#ee4d2d] rounded-sm hover:bg-[#ff572226] font-medium">
-                Thêm vào giỏ hàng
-              </button>
-              <button className="px-14 py-4 bg-[#ee4d2d] text-white rounded-sm hover:opacity-90 shadow-md font-medium">
-                Mua ngay
-              </button>
-            </div>
+            {/* Gọi cái bộ nhảy số AddToCart mình vừa làm vào đây */}
+            <AddToCart />
+          </div>
+        </div>
+
+        {/* PHẦN DƯỚI: MÔ TẢ CHI TIẾT (Đây là cái ông cần nè) */}
+        <div className="bg-white p-6 mt-6 rounded-sm shadow-sm">
+          <h2 className="bg-gray-50 p-4 text-lg font-bold text-gray-800 uppercase mb-6 border-l-4 border-orange-500">
+            Chi tiết sản phẩm
+          </h2>
+          <div className="px-4 text-gray-700 leading-8 whitespace-pre-wrap">
+            {product.description || "Đang cập nhật mô tả cho siêu phẩm này..."}
           </div>
         </div>
       </main>

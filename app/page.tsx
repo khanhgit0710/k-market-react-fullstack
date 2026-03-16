@@ -5,7 +5,7 @@ import Link from "next/link";
 
 async function getProducts() {
   const res = await fetch("http://localhost:3000/api/products", {
-    cache: "no-store", 
+    cache: "no-store",
   });
   if (!res.ok) return [];
   return res.json();
@@ -40,10 +40,14 @@ export default async function Home() {
             {products.map((item: any) => (
               <Link href={`/product/${item._id}`} key={item._id} className="group">
                 <div className="bg-white rounded-sm shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-transparent hover:border-orange-500 h-full flex flex-col">
-                  <div 
-                    className="w-full pt-[100%] bg-cover bg-center" 
-                    style={{ backgroundImage: `url(${item.image})` }}
-                  ></div>
+                  <div className="w-full relative pt-[100%] overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      referrerPolicy="no-referrer"
+                      className="absolute top-0 left-0 w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
                   <div className="p-2.5 flex flex-col flex-1 gap-2">
                     <h4 className="text-[12px] line-clamp-2 min-h-[32px] leading-4 text-gray-700">{item.name}</h4>
                     <div className="flex items-center gap-2 mt-auto">
