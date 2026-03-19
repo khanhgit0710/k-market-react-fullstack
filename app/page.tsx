@@ -11,17 +11,17 @@ async function getProducts(page: string, category: string, search: string) {
     // 💡 DÙNG localhost KHI CODE Ở MÁY, DÙNG LINK VERCEL KHI DEPLOY
     // const baseUrl = "http://localhost:3000"; 
     const baseUrl = "https://k-market-react-fullstack.vercel.app";
-    
+
     const catParam = (category && category !== "Tất cả") ? `&category=${encodeURIComponent(category)}` : "";
     const searchParam = search ? `&q=${encodeURIComponent(search)}` : ""; // <--- PHẢI CÓ DÒNG NÀY
-    
+
     const url = `${baseUrl}/api/products?page=${page}${catParam}${searchParam}`;
-    
+
     console.log("--- ĐANG GỌI API TẠI: ---", url);
 
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) return { products: [], totalPages: 1 };
-    
+
     const result = await res.json();
     return {
       products: result.products || [],
@@ -82,8 +82,8 @@ export default async function Home({
                   <Link
                     href={`?category=${encodeURIComponent(cat)}`}
                     className={`px-4 py-3 text-[13px] flex items-center justify-between group transition-all border-l-4 ${currentCategory === cat
-                        ? "border-[#ee4d2d] bg-orange-50/50 text-[#ee4d2d] font-bold"
-                        : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-[#ee4d2d]"
+                      ? "border-[#ee4d2d] bg-orange-50/50 text-[#ee4d2d] font-bold"
+                      : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-[#ee4d2d]"
                       }`}
                   >
                     <span>{cat}</span>
@@ -107,6 +107,24 @@ export default async function Home({
               Kết quả tìm kiếm cho: <span className="text-[#ee4d2d] font-bold">"{search}"</span>
             </div>
           )}
+
+          {/* Thanh Sắp Xếp (Sort Bar) */}
+          <div className="bg-[#ededed] p-3 rounded-sm mb-3 flex items-center gap-4 text-sm text-gray-600">
+            <span className="hidden sm:inline">Sắp xếp theo</span>
+            <div className="flex gap-2 flex-wrap">
+              <Link href="?sort=newest" className="bg-white px-5 py-2 rounded-sm hover:text-[#ee4d2d]">Mới nhất</Link>
+              <Link href="?sort=sold_desc" className="bg-white px-5 py-2 rounded-sm hover:text-[#ee4d2d]">Bán chạy</Link>
+
+              {/* Dropdown hoặc Nút giá đơn giản */}
+              <Link href="?sort=price_asc" className="bg-white px-5 py-2 rounded-sm flex items-center gap-2 hover:text-[#ee4d2d]">
+                Giá: Thấp đến Cao <i className="fa-solid fa-arrow-up-short-wide text-[10px]"></i>
+              </Link>
+              <Link href="?sort=price_desc" className="bg-white px-5 py-2 rounded-sm flex items-center gap-2 hover:text-[#ee4d2d]">
+                Giá: Cao đến Thấp <i className="fa-solid fa-arrow-down-short-wide text-[10px]"></i>
+              </Link>
+            </div>
+          </div>
+
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3 items-start">
             {products.map((item: any) => (

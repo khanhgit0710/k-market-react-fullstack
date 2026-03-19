@@ -4,9 +4,7 @@ import AddToCart from "@/components/product/AddToCart";
 
 async function getProductDetail(id: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : "http://localhost:3000";
+    const baseUrl = "https://k-market-react-fullstack.vercel.app";
 
     // Rồi sửa cái fetch thành:
     const res = await fetch(`${baseUrl}/api/products...`, { cache: "no-store" });

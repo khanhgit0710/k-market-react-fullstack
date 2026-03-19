@@ -5,11 +5,14 @@ import { Product } from "@/lib/models/Product";
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
-    const { id } = await params;
+    const { id } = await params; // Next.js 15 phải await params
+    
+    // 💡 TÌM THEO ID THẬT CỦA MONGODB
     const product = await Product.findById(id);
-    if (!product) return NextResponse.json({ error: "Không thấy hàng" }, { status: 404 });
+    
+    if (!product) return NextResponse.json({ error: "Hết hàng rồi" }, { status: 404 });
     return NextResponse.json(product);
   } catch (error) {
-    return NextResponse.json({ error: "ID sai định dạng" }, { status: 500 });
+    return NextResponse.json({ error: "Lỗi ID" }, { status: 500 });
   }
 }
