@@ -3,8 +3,6 @@ import Footer from "@/components/layout/Footer";
 import Pagination from "@/components/product/Pagination";
 import Link from "next/link";
 
-// 1. Hàm lấy hàng (Fetch Products)
-// app/page.tsx
 
 async function getProducts(page: string, category: string, search: string) {
   try {

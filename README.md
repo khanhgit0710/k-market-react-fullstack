@@ -8,8 +8,6 @@
 ## 🚀 Project Overview
 **K-Market** is a high-performance e-commerce storefront built with **Next.js 15 App Router** and **MongoDB Atlas**. This project demonstrates advanced frontend logic, RESTful API integration, and modern UI/UX principles.
 
-> **Status:** 🏗️ Phase 2: Core Logic & Database Integration (Targeting MVP by March 20)
-
 ## ✨ Key Features
 - **⚡ Next.js 15 Power:** Utilizing Server Components for maximum performance.
 - **🛡️ Fullstack with MongoDB:** Real data fetching from Atlas Cloud via RESTful API routes.
