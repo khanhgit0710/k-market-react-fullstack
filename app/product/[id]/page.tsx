@@ -1,13 +1,13 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AddToCart from "@/components/product/AddToCart";
+import Link from "next/link";
+import { Product } from "@/lib/models/Product";
 
 async function getProductDetail(id: string) {
   try {
     const baseUrl = "https://k-market-react-fullstack.vercel.app";
-
-    // Rồi sửa cái fetch thành:
-    const res = await fetch(`${baseUrl}/api/products...`, { cache: "no-store" });
+    const res = await fetch(`${baseUrl}/api/products/${id}`, { cache: "no-store" });
 
     if (!res.ok) return null;
     return res.json();
@@ -34,19 +34,18 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <div className="bg-gray-50 p-5 flex items-center gap-5 rounded-sm">
               <span className="text-gray-400 line-through text-base">{product.oldPrice}</span>
               <span className="text-3xl text-[#ee4d2d] font-bold">{product.newPrice}</span>
-            </div>
-            {/* Gọi cái bộ nhảy số AddToCart mình vừa làm vào đây */}
+            </div>  
+            {/* Gọi AddToCart ra */}
             <AddToCart />
           </div>
         </div>
 
-        {/* PHẦN DƯỚI: MÔ TẢ CHI TIẾT (Đây là cái ông cần nè) */}
         <div className="bg-white p-6 mt-6 rounded-sm shadow-sm">
           <h2 className="bg-gray-50 p-4 text-lg font-bold text-gray-800 uppercase mb-6 border-l-4 border-orange-500">
             Chi tiết sản phẩm
           </h2>
           <div className="px-4 text-gray-700 leading-8 whitespace-pre-wrap">
-            {product.description || "Đang cập nhật mô tả cho siêu phẩm này..."}
+            {product.description || "Đang cập nhật mô tả cho sản phẩm này..."}
           </div>
         </div>
       </main>

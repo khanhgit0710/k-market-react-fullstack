@@ -82,8 +82,8 @@ export default async function Home({
                   <Link
                     href={`?category=${encodeURIComponent(cat)}`}
                     className={`px-4 py-3 text-[13px] flex items-center justify-between group transition-all border-l-4 ${currentCategory === cat
-                      ? "border-[#ee4d2d] bg-orange-50/50 text-[#ee4d2d] font-bold"
-                      : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-[#ee4d2d]"
+                      ? "border-[#ee4d2d] bg-orange-50/50 text-[#ee4d2d] font-bold hover:border-[#f38b76]"
+                      : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-[#ffc2b6] hover:font-bold hover:border-[#ffc2b6]"
                       }`}
                   >
                     <span>{cat}</span>

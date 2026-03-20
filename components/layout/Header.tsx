@@ -69,7 +69,7 @@ export default function Header() {
           {/* LOGO */}
           <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
             <FaShoppingBag className="text-2xl md:text-4xl group-hover:animate-bounce" />
-            <span className="text-lg md:text-2xl font-black italic tracking-tighter hidden sm:inline uppercase">
+            <span className="text-lg md:text-2xl font-black italic tracking-tighter hidden sm:inline uppercase group-hover:animate-bounce">
               K-MARKET
             </span>
           </Link>

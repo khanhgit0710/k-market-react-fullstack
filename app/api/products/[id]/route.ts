@@ -5,7 +5,7 @@ import { Product } from "@/lib/models/Product";
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
-    const { id } = await params; // Next.js 15 phải await params
+    const { id } = await params;
     
     // 💡 TÌM THEO ID THẬT CỦA MONGODB
     const product = await Product.findById(id);
