@@ -52,13 +52,13 @@ export default function Header() {
             </div>
           </div>
           <ul className="flex gap-5 items-center font-medium">
-            <li className="flex items-center gap-1 cursor-pointer"><FaBell /> Thông báo</li>
-            <li className="flex items-center gap-1 cursor-pointer"><FaQuestionCircle /> Trợ giúp</li>
+            <li className="flex items-center gap-1 cursor-pointer hover:opacity-80 hover:underline"><FaBell /> Thông báo</li>
+            <li className="flex items-center gap-1 cursor-pointer hover:opacity-80 hover:underline"><FaQuestionCircle /> Trợ giúp</li>
 
             {/* 💡 LOGIC LOGIN/LOGOUT NẰM GỌN Ở ĐÂY */}
             <SignedOut>
-              <Link href="/register" className="font-bold border-r pr-4 border-white/20">Đăng ký</Link>
-              <Link href="/login" className="font-bold border-r pr-4 border-white/20">Đăng nhập</Link>
+              <Link href="/register" className="font-bold border-r pr-4 border-white/20 hover:opacity-80 hover:underline ">Đăng ký</Link>
+              <Link href="/login" className="font-bold hover:opacity-80 hover:underline ">Đăng nhập</Link>
             </SignedOut>
 
             <SignedIn>
