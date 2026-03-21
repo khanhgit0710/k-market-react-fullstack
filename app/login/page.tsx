@@ -22,23 +22,22 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const result = await signIn.create({
-        identifier: email,
-        password,
-      });
+      const result = await signIn.create({ identifier: email, password });
 
       if (result.status === "complete") {
+        // 💡 BƯỚC QUAN TRỌNG: Thiết lập session và đợi nó nạp vào trình duyệt
         await setActive({ session: result.createdSessionId });
-        toast.success("Chào mừng ông giáo đã trở lại!");
-        router.push("/"); // Về trang chủ
-      } else {
-        console.log(result);
+
+        toast.success("Đang vào gara...");
+
+        // 💡 CHIÊU CUỐI: Đợi 500ms cho Clerk ghi Cookie xong rồi mới load trang
+        setTimeout(() => {
+          window.location.assign("/"); // Dùng assign mạnh hơn href
+        }, 500);
       }
     } catch (err: any) {
-      toast.error("Sai tài khoản hoặc mật khẩu rồi ông giáo ơi!");
-    } finally {
-      setLoading(false);
-    }
+      toast.error("Tạch rồi ông giáo!");
+    } finally { setLoading(false); }
   };
 
   // 2. Hàm xử lý Đăng nhập bằng Google
@@ -81,8 +80,8 @@ export default function LoginPage() {
             required
           />
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className={`w-full bg-[#ee4d2d] text-white py-3 rounded-sm uppercase font-medium transition-all shadow-md ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#d73211]'}`}
           >
@@ -106,7 +105,7 @@ export default function LoginPage() {
             <button className="flex items-center justify-center gap-2 border border-gray-300 p-2 rounded-sm hover:bg-gray-50 text-gray-700 text-sm font-medium">
               <FaFacebook className="text-xl text-blue-700" /> Facebook
             </button>
-            <button 
+            <button
               type="button"
               onClick={signInWithGoogle}
               className="flex items-center justify-center gap-2 border border-gray-300 p-2 rounded-sm hover:bg-gray-50 text-gray-700 text-sm font-medium"

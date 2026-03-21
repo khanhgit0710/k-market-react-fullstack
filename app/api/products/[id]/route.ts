@@ -16,3 +16,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: "Lỗi ID" }, { status: 500 });
   }
 }
+
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    await connectDB();
+    const { id } = await params;
+    await Product.findByIdAndDelete(id);
+    return NextResponse.json({ message: "Xóa thành công!" });
+  } catch (error) {
+    return NextResponse.json({ error: "Lỗi xóa hàng" }, { status: 500 });
+  }
+}

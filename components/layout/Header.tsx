@@ -6,19 +6,22 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCartStore } from "@/lib/store/useCartStore";
 import {
-  SignInButton,
-  SignUpButton,
   UserButton,
   SignedIn,
-  SignedOut
+  SignedOut,
+  useUser // 💡 Thêm thằng này để lấy Metadata từ Clerk
 } from "@clerk/nextjs";
 
 export default function Header() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useUser(); // 💡 Lấy thông tin user hiện tại
   const cart = useCartStore((state) => state.cart);
   const [mounted, setMounted] = useState(false);
   const [searchValue, setSearchValue] = useState(searchParams.get("q") || "");
+
+  // 💡 BIẾN BOOLEAN THẦN THÁNH: Chỉ true khi role trong metadata là admin
+  const isAdmin = user?.publicMetadata?.role === "admin";
 
   useEffect(() => {
     setMounted(true);
@@ -36,7 +39,8 @@ export default function Header() {
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  if (!mounted) return null; // Tránh lỗi Hydration
+  // Fix lỗi Hydration: Khi chưa mounted thì hiện khung Header trống để giao diện không bị giật
+  if (!mounted) return <header className="bg-[#ee4d2d] w-full h-[120px] shadow-lg"></header>;
 
   return (
     <header className="bg-[#ee4d2d] text-white w-full sticky top-0 z-50 shadow-lg font-sans">
@@ -55,14 +59,23 @@ export default function Header() {
             <li className="flex items-center gap-1 cursor-pointer hover:opacity-80 hover:underline"><FaBell /> Thông báo</li>
             <li className="flex items-center gap-1 cursor-pointer hover:opacity-80 hover:underline"><FaQuestionCircle /> Trợ giúp</li>
 
-            {/* 💡 LOGIC LOGIN/LOGOUT NẰM GỌN Ở ĐÂY */}
             <SignedOut>
               <Link href="/register" className="font-bold border-r pr-4 border-white/20 hover:opacity-80 hover:underline ">Đăng ký</Link>
               <Link href="/login" className="font-bold hover:opacity-80 hover:underline ">Đăng nhập</Link>
             </SignedOut>
 
             <SignedIn>
-              <UserButton afterSignOutUrl="/" />
+              <div className="flex items-center gap-4 pl-4 border-l border-white/20">
+                
+                {/* 💡 CHIÊU ĐỘC: Dùng toán tử && để ẩn/hiện nút dựa trên biến isAdmin */}
+                {isAdmin && (
+                  <Link href="/admin" className="hidden lg:block text-[11px] bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition-all border border-white/10 font-bold uppercase tracking-tighter shadow-sm">
+                    Dashboard Sếp 🏎️
+                  </Link>
+                )}
+                
+                <UserButton afterSignOutUrl="/" />
+              </div>
             </SignedIn>
           </ul>
         </div>
@@ -83,15 +96,15 @@ export default function Header() {
             placeholder="Tìm sản phẩm..."
             className="w-full px-4 py-1 text-black outline-none text-sm"
           />
-          <button type="submit" className="bg-[#fb5533] px-6 py-2 rounded-sm hover:opacity-90">
+          <button type="submit" className="bg-[#fb5533] px-6 py-2 rounded-sm hover:opacity-90 transition-colors">
             <FaSearch className="text-white" />
           </button>
         </form>
 
-        <Link href="/cart" className="relative p-2 flex-shrink-0">
-          <FaCartPlus className="text-2xl md:text-3xl" />
+        <Link href="/cart" className="relative p-2 flex-shrink-0 group">
+          <FaCartPlus className="text-2xl md:text-3xl group-hover:scale-110 transition-transform" />
           {totalItems > 0 && (
-            <span className="absolute top-0 right-0 bg-white text-[#ee4d2d] text-[10px] px-1.5 rounded-full font-bold border border-[#ee4d2d]">
+            <span className="absolute top-0 right-0 bg-white text-[#ee4d2d] text-[10px] px-1.5 rounded-full font-bold border border-[#ee4d2d] shadow-sm leading-none animate-pulse">
               {totalItems}
             </span>
           )}
