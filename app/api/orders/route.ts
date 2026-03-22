@@ -1,7 +1,7 @@
 // app/api/orders/route.ts
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import { Order } from "@/models/Order";
+import { Order } from "@/lib/models/Order";
 import { auth } from "@clerk/nextjs/server";
 
 export async function POST(req: Request) {
