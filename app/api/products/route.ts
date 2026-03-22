@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import { Product } from "@/lib/models/Product";
@@ -9,29 +10,23 @@ export async function GET(request: Request) {
     
     const page = parseInt(searchParams.get("page") || "1");
     const category = searchParams.get("category");
-    const search = searchParams.get("q"); // Lấy từ khóa 'q' từ URL
+    const search = searchParams.get("q");
+    const sort = searchParams.get("sort"); // 💡 LẤY THAM SỐ SORT
 
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    // 💡 TẠO BỘ LỌC QUERY
     let query: any = {};
-    
-    // 1. Lọc theo danh mục (nếu có)
-    if (category && category !== "Tất cả") {
-      query.category = { $regex: new RegExp(`^${category}$`, "i") };
-    }
+    if (category && category !== "Tất cả") query.category = { $regex: new RegExp(`^${category}$`, "i") };
+    if (search) query.name = { $regex: search, $options: "i" };
 
-    // 2. Lọc theo tìm kiếm (ĐÂY LÀ CHỖ QUAN TRỌNG NHẤT)
-    if (search && search.trim() !== "") {
-      // Tìm các sản phẩm mà tên có chứa từ khóa (không phân biệt hoa thường)
-      query.name = { $regex: search.trim(), $options: "i" };
-    }
+    // 💡 LOGIC SẮP XẾP
+    let sortOptions: any = { createdAt: -1 }; // Mặc định là mới nhất
+    if (sort === "price_asc") sortOptions = { newPrice: 1 };  // Giá thấp đến cao
+    if (sort === "price_desc") sortOptions = { newPrice: -1 }; // Giá cao đến thấp
+    if (sort === "sold_desc") sortOptions = { sold: -1 };      // Bán chạy nhất
 
-    // Soi thử xem query nó ra cái gì trong Terminal VS Code
-    console.log("--- KHO HÀNG ĐANG LỌC THEO: ---", JSON.stringify(query));
-
-    const products = await Product.find(query).skip(skip).limit(limit);
+    const products = await Product.find(query).sort(sortOptions).skip(skip).limit(limit);
     const totalCount = await Product.countDocuments(query);
 
     return NextResponse.json({
@@ -39,7 +34,6 @@ export async function GET(request: Request) {
       totalPages: Math.ceil(totalCount / limit) || 1,
     });
   } catch (error) {
-    console.error("Lỗi API:", error);
     return NextResponse.json({ products: [], totalPages: 1 }, { status: 500 });
   }
 }
