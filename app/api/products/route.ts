@@ -37,3 +37,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ products: [], totalPages: 1 }, { status: 500 });
   }
 }
+
+export async function POST(request: Request) {
+  try {
+    await connectDB();
+    const body = await request.json(); // Lấy dữ liệu người dùng nhập
+    const newProduct = await Product.create(body); // Lưu vào MongoDB
+    return NextResponse.json(newProduct, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ error: "Lỗi khi tạo sản phẩm" }, { status: 500 });
+  }
+}
