@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     const search = searchParams.get("q");
     const sort = searchParams.get("sort"); // 💡 LẤY THAM SỐ SORT
 
-    const limit = 10;
+    const limit = parseInt(searchParams.get("limit") || "100");
     const skip = (page - 1) * limit;
 
     let query: any = {};
@@ -41,10 +41,19 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     await connectDB();
-    const body = await request.json(); // Lấy dữ liệu người dùng nhập
-    const newProduct = await Product.create(body); // Lưu vào MongoDB
-    return NextResponse.json(newProduct, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ error: "Lỗi khi tạo sản phẩm" }, { status: 500 });
+    const body = await request.json(); 
+    
+    // Đúc sản phẩm
+    const newProduct = await Product.create(body);
+    
+    return NextResponse.json(newProduct, { status: 201 }); 
+  } catch (error: any) { // Thêm : any vào đây
+    // 🔥 CHIÊU SENIOR: IN RA LỖI CHI TIẾT ĐỂ BIẾT ĐƯỜNG MÀ SỬA
+    console.error("LỖI KHI CREATE TRÊN SERVER:", error.message);
+    
+    return NextResponse.json({ 
+      error: "Lỗi tạo sản phẩm mới!", 
+      details: error.message // Trả cái lỗi chi tiết về cho Frontend
+    }, { status: 500 });
   }
 }

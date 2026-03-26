@@ -87,7 +87,7 @@ export default function EditProductPage() {
     }
   };
 
-  if (isLoading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Đang tải dữ liệu động cơ...</div>;
+  if (isLoading) return <div className="text-center py-20 text-xl font-bold text-gray-500">Đang tải dữ liệu..</div>;
 
   return (      
       <main className="max-w-[800px] mx-auto py-10 px-4 flex-grow w-full">

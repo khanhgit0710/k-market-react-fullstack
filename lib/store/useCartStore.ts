@@ -25,7 +25,6 @@ export const useCartStore = create<CartStore>()(
       cart: [],
 
       addToCart: (product, qty) => set((state) => {
-        // Chuyển đổi giá từ chuỗi "195.000đ" thành số 195000
         const numericPrice = Number(product.newPrice.replace(/[^0-9]/g, ""));
         const existingItem = state.cart.find((item) => item._id === product._id);
 

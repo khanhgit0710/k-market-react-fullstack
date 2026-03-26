@@ -12,7 +12,6 @@ export default function AddToCart({ product }: { product: any }) {
     // Gọi hàm addToCart từ Zustand
     addToCart(product, qty);
     
-    // Hiện thông báo đẹp trai
     toast.success(`Đã thêm ${qty} sản phẩm vào giỏ hàng!`, {
       style: {
         border: '1px solid #ee4d2d',
