@@ -30,10 +30,12 @@ export async function POST(req: Request) {
         // Dùng toLocaleString('vi-VN') để hiển thị tiền VND cho đẹp
         const productContext = realProducts.length > 0
             ? realProducts.map(p => {
-                // Kiểm tra nếu có giá thì mới toLocaleString, không thì để "Liên hệ"
-                const priceDisplay = (p.price !== undefined && p.price !== null)
-                    ? `${Number(p.price).toLocaleString('vi-VN')}đ`
-                    : "Liên hệ";
+                // Ép kiểu Number để chắc chắn toLocaleString chạy được
+                // Nếu không có giá (undefined/null) thì hiện là "Liên hệ"
+                const priceVal = Number(p.price);
+                const priceDisplay = isNaN(priceVal) || p.price === null || p.price === undefined
+                    ? "Liên hệ"
+                    : `${priceVal.toLocaleString('vi-VN')}đ`;
 
                 return `- Sản phẩm: ${p.name} | Giá: ${priceDisplay} | Mô tả: ${p.description || 'Chính hãng K-Market'}`;
             }).join("\n")
