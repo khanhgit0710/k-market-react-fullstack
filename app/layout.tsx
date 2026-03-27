@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Toaster } from 'react-hot-toast';
+import ChatAI from '@/components/layout/ChatAI'
 
 export const metadata: Metadata = {
   title: "K-Market - Fullstack Store",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <body>
           {children}
           <Toaster position="bottom-right" />
+          <ChatAI />
         </body>
       </html>
     </ClerkProvider>
