@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCartStore } from "@/lib/store/useCartStore";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 import {
   UserButton,
   SignedIn,
@@ -76,9 +77,11 @@ export default function Header() {
                 
                 <UserButton afterSignOutUrl="/" />
               </div>
+              <ThemeToggle />
             </SignedIn>
           </ul>
         </div>
+        
       </div>
 
       {/* MAIN HEADER */}

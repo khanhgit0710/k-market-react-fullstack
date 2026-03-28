@@ -61,14 +61,14 @@ const ChatAI = () => {
             {isOpen && (
                 <div className="w-[380px] h-[550px] bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden mb-5 transition-all duration-300 ease-in-out transform scale-100 origin-bottom-right">
                     {/* Header */}
-                    <div className="bg-gray-900 p-5 text-white flex justify-between items-center">
+                    <div className="bg-[#ff6647] p-5 text-white flex justify-between items-center">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-blue-500 rounded-xl">
-                                <BotMessageSquare size={24} />
+                            <div className="p-2 bg-[#ff6647] rounded-xl">
+                                <BotMessageSquare size={26} />
                             </div>
                             <div>
                                 <h3 className="font-bold text-lg">K-Market AI</h3>
-                                <p className="text-sm text-gray-400">Trợ lý ảo thông minh</p>
+                                <p className="text-sm text-gray-800">Trợ lý ảo thông minh</p>
                             </div>
                         </div>
                         <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white transition">
@@ -81,7 +81,7 @@ const ChatAI = () => {
                         {messages.map((msg, index) => (
                             <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 <div className={`max-w-[80%] p-4 rounded-3xl ${msg.role === 'user'
-                                    ? 'bg-blue-600 text-white rounded-br-none'
+                                    ? 'bg-[#ff6647] text-white rounded-br-none'
                                     : 'bg-white text-gray-800 rounded-bl-none shadow-sm border border-gray-100'
                                     }`}>
                                     <div className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -125,7 +125,7 @@ const ChatAI = () => {
                             <button
                                 onClick={handleSend}
                                 disabled={isLoading}
-                                className="absolute right-2 p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition disabled:bg-gray-300"
+                                className="absolute right-2 p-3 bg-[#ee4d2d] text-white rounded-full hover:bg-[#ff6647] transition disabled:bg-gray-300"
                             >
                                 {isLoading ? <CornerDownLeft size={20} className='animate-pulse' /> : <SendHorizontal size={20} />}
                             </button>
@@ -138,7 +138,7 @@ const ChatAI = () => {
             {/* Nút Tròn Mở Chat */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out ${isOpen ? 'bg-gray-800 rotate-180' : 'bg-blue-600 hover:bg-blue-700'
+                className={`p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 ${isOpen ? 'bg-[#ee4d2d] rotate-180' : 'bg-[#ee4d2d] hover:bg-[#ff6647]'
                     } text-white`}
             >
                 {isOpen ? <X size={28} /> : <BotMessageSquare size={28} />}

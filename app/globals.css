@@ -8,6 +8,14 @@
   100% { background-position: 0% 50%; }
 }
 
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Định nghĩa lại màu cam Shopee/K-Market cho chuẩn v4 */
+  --color-brand: #ee4d2d;
+  --color-brand-hover: #f05d40;
+}
+
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradientMove 10s ease infinite;
@@ -22,4 +30,51 @@ img {
 html, body {
   max-width: 100vw;
   overflow-x: hidden;
+}
+
+/* ĐỘ LẠI THANH CUỘN (SCROLLBAR) CHO KHÉT */
+::-webkit-scrollbar {
+  width: 8px; /* Cho thanh cuộn thon gọn lại giống Mac OS */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Ẩn cái rãnh đi cho đẹp */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db; /* Màu xám nhạt cho Light Mode */
+  border-radius: 10px; /* Bo tròn cực sang */
+}
+
+/* Khi sang Dark Mode thì đổi màu thanh cuộn */
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563; /* Màu xám đậm cho Dark Mode */
+}
+
+/* Khi rê chuột vào thanh cuộn thì sáng lên màu cam K-Market */
+::-webkit-scrollbar-thumb:hover {
+  background: #ee4d2d; 
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Nếu ông muốn định nghĩa màu riêng cho K-Market thì bỏ vào đây */
+  --color-kmarket: #ee4d2d;
+}
+
+/* Sửa lại chỗ này một chút cho ăn chắc */
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 10px;
+  border: 2px solid transparent; /* Tạo khoảng trống nhỏ cho sang */
+  background-clip: content-box;
+}
+
+.dark body::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
 }
