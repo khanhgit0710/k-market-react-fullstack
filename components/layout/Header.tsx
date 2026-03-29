@@ -6,28 +6,59 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCartStore } from "@/lib/store/useCartStore";
 import ThemeToggle from "@/components/layout/ThemeToggle";
-import {
-  UserButton,
-  SignedIn,
-  SignedOut,
-  useUser // 💡 Thêm thằng này để lấy Metadata từ Clerk
-} from "@clerk/nextjs";
+import { useUser, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user } = useUser(); // 💡 Lấy thông tin user hiện tại
+  const { user, isLoaded } = useUser();
+  
+  // Lấy hàm từ Zustand
   const cart = useCartStore((state) => state.cart);
+  const setCart = useCartStore((state) => state.setCart);
+  const clearCart = useCartStore((state) => state.clearCart);
+  
   const [mounted, setMounted] = useState(false);
   const [searchValue, setSearchValue] = useState(searchParams.get("q") || "");
 
-  // 💡 BIẾN BOOLEAN THẦN THÁNH: Chỉ true khi role trong metadata là admin
   const isAdmin = user?.publicMetadata?.role === "admin";
 
+  // 1. Xử lý Mounting để tránh lỗi Hydration
   useEffect(() => {
     setMounted(true);
     setSearchValue(searchParams.get("q") || "");
   }, [searchParams]);
+
+  // 2. 💡 LOGIC LOGOUT: Tự động dọn kho khi User đăng xuất
+  useEffect(() => {
+    if (isLoaded && !user) {
+      clearCart(); 
+    }
+  }, [user, isLoaded, clearCart]);
+
+  // 3. 💡 LOGIC LOGIN: Hồi sinh giỏ hàng từ MongoDB
+  useEffect(() => {
+    const fetchCart = async () => {
+      // Chỉ đòi đồ từ DB nếu máy đang TRỐNG (tránh đè đồ mới thêm)
+      if (cart.length > 0) return; 
+
+      try {
+        const res = await fetch("/api/cart");
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.items?.length > 0) {
+            setCart(data.items); 
+          }
+        }
+      } catch (error) {
+        console.log("DB đang trống hoặc chưa có dữ liệu");
+      }
+    };
+
+    if (isLoaded && user && mounted) {
+      fetchCart();
+    }
+  }, [user, isLoaded, mounted]); // Không bỏ 'cart' vào đây để tránh loop
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +71,7 @@ export default function Header() {
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Fix lỗi Hydration: Khi chưa mounted thì hiện khung Header trống để giao diện không bị giật
+  // Tránh lỗi Render phía Server
   if (!mounted) return <header className="bg-[#ee4d2d] w-full h-[120px] shadow-lg"></header>;
 
   return (
@@ -67,21 +98,17 @@ export default function Header() {
 
             <SignedIn>
               <div className="flex items-center gap-4 pl-4 border-l border-white/20">
-                
-                {/* 💡 CHIÊU ĐỘC: Dùng toán tử && để ẩn/hiện nút dựa trên biến isAdmin */}
                 {isAdmin && (
                   <Link href="/admin" className="hidden lg:block text-[11px] bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition-all border border-white/10 font-bold uppercase tracking-tighter shadow-sm">
                     Dashboard Sếp 🏎️
                   </Link>
                 )}
-                
                 <UserButton afterSignOutUrl="/" />
               </div>
               <ThemeToggle />
             </SignedIn>
           </ul>
         </div>
-        
       </div>
 
       {/* MAIN HEADER */}

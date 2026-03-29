@@ -1,60 +1,60 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface CartItem {
-  _id: string;
-  name: string;
-  price: string;
-  newPrice: number; // Lưu số để tính toán cho dễ
-  image: string;
-  quantity: number;
-}
-
-interface CartStore {
-  cart: CartItem[];
-  addToCart: (product: any, qty: number) => void;
-  removeFromCart: (id: string) => void;
-  updateQuantity: (id: string, qty: number) => void;
-  clearCart: () => void;
-  getTotalPrice: () => number;
-}
-
-export const useCartStore = create<CartStore>()(
+export const useCartStore = create<any>()(
   persist(
     (set, get) => ({
       cart: [],
 
-      addToCart: (product, qty) => set((state) => {
-        const numericPrice = Number(product.newPrice.replace(/[^0-9]/g, ""));
-        const existingItem = state.cart.find((item) => item._id === product._id);
+      // 1. Hàm thêm sản phẩm
+      addToCart: (product: any, qty: number) => set((state: any) => {
+        const numericPrice = typeof product.newPrice === 'string' 
+          ? Number(product.newPrice.replace(/[^0-9]/g, "")) 
+          : product.newPrice;
+
+        const existingItem = state.cart.find((item: any) => item._id === product._id);
+        let newCart;
 
         if (existingItem) {
-          return {
-            cart: state.cart.map((item) =>
-              item._id === product._id ? { ...item, quantity: item.quantity + qty } : item
-            ),
-          };
+          newCart = state.cart.map((item: any) =>
+            item._id === product._id ? { ...item, quantity: item.quantity + qty } : item
+          );
+        } else {
+          newCart = [...state.cart, { ...product, newPrice: numericPrice, quantity: qty }];
         }
-        return { cart: [...state.cart, { ...product, newPrice: numericPrice, quantity: qty }] };
+
+        fetch("/api/cart", { method: "POST", body: JSON.stringify({ items: newCart }) }).catch(() => {});
+        return { cart: newCart };
       }),
 
-      removeFromCart: (id) => set((state) => ({
-        cart: state.cart.filter((item) => item._id !== id),
-      })),
+      // 2. Hàm xóa sản phẩm
+      removeFromCart: (id: string) => set((state: any) => {
+        const newCart = state.cart.filter((item: any) => item._id !== id);
+        fetch("/api/cart", { method: "POST", body: JSON.stringify({ items: newCart }) }).catch(() => {});
+        return { cart: newCart };
+      }),
 
-      updateQuantity: (id, qty) => set((state) => ({
-        cart: state.cart.map((item) =>
+      // 3. Hàm cập nhật số lượng
+      updateQuantity: (id: string, qty: number) => set((state: any) => {
+        const newCart = state.cart.map((item: any) =>
           item._id === id ? { ...item, quantity: Math.max(1, qty) } : item
-        ),
-      })),
+        );
+        fetch("/api/cart", { method: "POST", body: JSON.stringify({ items: newCart }) }).catch(() => {});
+        return { cart: newCart };
+      }),
 
+      // 4. Các hàm bổ trợ
       clearCart: () => set({ cart: [] }),
+      setCart: (items: any[]) => set({ cart: items }),
 
+      // 💡 HÀM THIẾU ĐÂY NÈ KHÁNH:
       getTotalPrice: () => {
         const { cart } = get();
-        return cart.reduce((total, item) => total + (item.newPrice * item.quantity), 0);
+        return cart.reduce((total: number, item: any) => {
+          return total + (item.newPrice * item.quantity);
+        }, 0);
       },
     }),
-    { name: 'k-market-cart-storage' } // Lưu vào LocalStorage
+    { name: 'k-market-cart-storage' }
   )
 );
