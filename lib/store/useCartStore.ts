@@ -47,7 +47,6 @@ export const useCartStore = create<any>()(
       clearCart: () => set({ cart: [] }),
       setCart: (items: any[]) => set({ cart: items }),
 
-      // 💡 HÀM THIẾU ĐÂY NÈ KHÁNH:
       getTotalPrice: () => {
         const { cart } = get();
         return cart.reduce((total: number, item: any) => {

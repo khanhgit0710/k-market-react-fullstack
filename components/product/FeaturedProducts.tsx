@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight, Flame } from "lucide-react";
+import SafeClientVisual from "@/components/ui/SafeClientVisual";
 
 interface FeaturedProductsProps {
   products: any[];
@@ -27,7 +28,9 @@ export default function FeaturedProducts({ products, title = "Gợi Ý Hôm Nay"
       {/* Tiêu đề động */}
       <div className="flex items-end gap-3 mb-6 px-2">
         <div className="flex items-center gap-2 bg-gradient-to-r from-[#ee4d2d] to-orange-400 text-white px-4 py-2 rounded-tr-2xl rounded-bl-2xl shadow-lg">
-          <Flame size={20} className="animate-bounce" />
+          <SafeClientVisual fallbackClassName="inline-flex h-5 w-5 shrink-0 items-center justify-center">
+            <Flame size={20} className="animate-bounce" />
+          </SafeClientVisual>
           <h2 className="text-lg font-extrabold uppercase tracking-wider">
             {title}
           </h2>
@@ -42,14 +45,18 @@ export default function FeaturedProducts({ products, title = "Gợi Ý Hôm Nay"
         onClick={() => scroll("left")}
         className="absolute left-[-15px] top-[60%] -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-gray-800 opacity-0 group-hover:opacity-100 transition-all hover:bg-[#ee4d2d] hover:text-white border border-gray-100"
       >
-        <ChevronLeft size={20} />
+        <SafeClientVisual fallbackClassName="inline-flex h-5 w-5 items-center justify-center">
+          <ChevronLeft size={20} />
+        </SafeClientVisual>
       </button>
 
       <button 
         onClick={() => scroll("right")}
         className="absolute right-[-15px] top-[60%] -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-gray-800 opacity-0 group-hover:opacity-100 transition-all hover:bg-[#ee4d2d] hover:text-white border border-gray-100"
       >
-        <ChevronRight size={20} />
+        <SafeClientVisual fallbackClassName="inline-flex h-5 w-5 items-center justify-center">
+          <ChevronRight size={20} />
+        </SafeClientVisual>
       </button>
 
       {/* List sản phẩm */}

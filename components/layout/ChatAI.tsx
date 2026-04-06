@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { BotMessageSquare, X, SendHorizontal, CornerDownLeft } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import SafeClientVisual from '@/components/ui/SafeClientVisual';
 
 type Message = {
     role: 'user' | 'bot';
@@ -16,12 +17,31 @@ const ChatAI = () => {
         { role: 'bot', text: 'Chào Khánh! Trợ lý K-Market nghe đây. Bạn cần tìm gì?' }
     ]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isNearFooter, setIsNearFooter] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Tự động cuộn xuống khi có tin nhắn mới
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
+
+    useEffect(() => {
+        const footer = document.getElementById("site-footer");
+        if (!footer) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsNearFooter(entry.isIntersecting);
+            },
+            {
+                root: null,
+                threshold: 0.15,
+            }
+        );
+
+        observer.observe(footer);
+        return () => observer.disconnect();
+    }, []);
 
     const handleSend = async () => {
         if (!input.trim() || isLoading) return;
@@ -55,15 +75,21 @@ const ChatAI = () => {
         }
     };
 
+    const activeHeaderColor = isNearFooter ? "bg-violet-600" : "bg-[#ff6647]";
+    const activeBubbleColor = isNearFooter ? "bg-violet-600" : "bg-[#ff6647]";
+    const activeButtonColor = isNearFooter
+        ? "bg-violet-600 hover:bg-violet-500"
+        : "bg-[#ee4d2d] hover:bg-[#ff6647]";
+
     return (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
             {/* Khung Chat */}
             {isOpen && (
                 <div className="w-[380px] h-[550px] bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden mb-5 transition-all duration-300 ease-in-out transform scale-100 origin-bottom-right">
                     {/* Header */}
-                    <div className="bg-[#ff6647] p-5 text-white flex justify-between items-center">
+                    <div className={`${activeHeaderColor} p-5 text-white flex justify-between items-center transition-colors duration-300`}>
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-[#ff6647] rounded-xl">
+                            <div className={`${activeHeaderColor} p-2 rounded-xl transition-colors duration-300`}>
                                 <BotMessageSquare size={26} />
                             </div>
                             <div>
@@ -81,7 +107,7 @@ const ChatAI = () => {
                         {messages.map((msg, index) => (
                             <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 <div className={`max-w-[80%] p-4 rounded-3xl ${msg.role === 'user'
-                                    ? 'bg-[#ff6647] text-white rounded-br-none'
+                                    ? `${activeBubbleColor} text-white rounded-br-none transition-colors duration-300`
                                     : 'bg-white text-gray-800 rounded-bl-none shadow-sm border border-gray-100'
                                     }`}>
                                     <div className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -125,9 +151,11 @@ const ChatAI = () => {
                             <button
                                 onClick={handleSend}
                                 disabled={isLoading}
-                                className="absolute right-2 p-3 bg-[#ee4d2d] text-white rounded-full hover:bg-[#ff6647] transition disabled:bg-gray-300"
+                                className={`absolute right-2 p-3 text-white rounded-full transition disabled:bg-gray-300 ${activeButtonColor}`}
                             >
-                                {isLoading ? <CornerDownLeft size={20} className='animate-pulse' /> : <SendHorizontal size={20} />}
+                                <SafeClientVisual fallbackClassName="inline-flex h-5 w-5 items-center justify-center">
+                                    {isLoading ? <CornerDownLeft size={20} className='animate-pulse' /> : <SendHorizontal size={20} />}
+                                </SafeClientVisual>
                             </button>
                         </div>
                         <p className='text-center text-xs text-gray-400 mt-3'>AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng.</p>
@@ -138,10 +166,11 @@ const ChatAI = () => {
             {/* Nút Tròn Mở Chat */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 ${isOpen ? 'bg-[#ee4d2d] rotate-180' : 'bg-[#ee4d2d] hover:bg-[#ff6647]'
-                    } text-white`}
+                className={`p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 text-white ${isOpen ? `rotate-180 ${activeButtonColor}` : activeButtonColor}`}
             >
-                {isOpen ? <X size={28} /> : <BotMessageSquare size={28} />}
+                <SafeClientVisual fallbackClassName="inline-flex h-7 w-7 items-center justify-center">
+                    {isOpen ? <X size={28} /> : <BotMessageSquare size={28} />}
+                </SafeClientVisual>
             </button>
         </div>
     );

@@ -6,8 +6,10 @@ import ChatAI from '@/components/layout/ChatAI';
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "K-Market - Fullstack Store",
-  description: "Built by Khanh Manager", // Đã sửa lỗi chính tả Build -> Built cho chuẩn tiếng Anh Senior nha!
+  title: "K-Market | Fullstack E-commerce Store",
+  description: "A professional e-commerce platform built with Next.js 15, Tailwind CSS, and MongoDB. Developed by Minh Khánh.",
+  // Thêm cái này để tăng điểm SEO cho CV
+  keywords: ["ReactJS", "Next.js", "Front-end Developer", "E-commerce project"],
 };
 
 export default function RootLayout({
@@ -16,19 +18,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-      <html lang="vi" suppressHydrationWarning>
-        <head>
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-        </head>
-        <body className="bg-[#f5f5f5] dark:bg-gray-900 transition-colors duration-300">
-          <ClerkProvider>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+    // suppressHydrationWarning ở đây sẽ giúp bỏ qua lỗi mismatch do Dark Reader/Themes gây ra
+    <html lang="vi" suppressHydrationWarning>
+      <body className="bg-[#f5f5f5] dark:bg-gray-900 transition-colors duration-300 antialiased">
+        <ClerkProvider>
+          <ThemeProvider 
+            attribute="class" 
+            defaultTheme="light" 
+            enableSystem 
+            disableTransitionOnChange // Thêm cái này để tránh bị "nháy" màu khi đổi trang
+          >
             {children}
             <Toaster position="bottom-right" />
             <ChatAI />  
           </ThemeProvider>
-          </ClerkProvider>
-        </body>
-      </html>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

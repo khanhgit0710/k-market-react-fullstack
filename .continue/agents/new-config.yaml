@@ -1,0 +1,11 @@
+name: Local Config
+version: 1.0.0
+models:
+  - name: Gemini 1.5 Pro
+    provider: google
+    model: gemini-1.5-pro
+    apiKey: AIzaSybB8zYyljGcm6QU3ysZzDAKa6KV5xznH-ZA
+  - name: Gemini 1.5 Flash
+    provider: google
+    model: gemini-1.5-flash
+    apiKey: AIzaSybB8zYyljGcm6QU3ysZzDAKa6KV5xznH-ZA

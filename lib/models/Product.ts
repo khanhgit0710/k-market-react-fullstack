@@ -9,7 +9,8 @@ const ProductSchema = new Schema({
   location: { type: String },
   description: { type: String, required: true },
   category: { type: String, required: true },
+  averageRating: { type: Number, default: 0 },
+  reviewCount: { type: Number, default: 0 },
 });
 
-// Lệnh này để kiểm tra nếu model đã tồn tại thì dùng lại, chưa thì mới tạo mới
 export const Product = models.Product || model("Product", ProductSchema);

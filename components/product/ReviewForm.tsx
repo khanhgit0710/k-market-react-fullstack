@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function ReviewForm({ productId }: { productId: string }) {
+  const router = useRouter();
   const [rating, setRating] = useState(5);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
@@ -10,16 +13,24 @@ export default function ReviewForm({ productId }: { productId: string }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Giả lập gọi API POST tới /api/reviews
-    console.log({ productId, rating, comment });
-    
-    setTimeout(() => {
-      alert("Đã gửi đánh giá thành công!");
+    try {
+      const res = await fetch(`/api/products/${productId}/reviews`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rating, comment }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        toast.error(typeof data.error === "string" ? data.error : "Gửi đánh giá thất bại");
+        return;
+      }
+      toast.success("Đã gửi đánh giá thành công!");
       setComment("");
       setRating(5);
+      router.refresh();
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (

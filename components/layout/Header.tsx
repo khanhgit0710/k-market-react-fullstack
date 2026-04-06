@@ -69,7 +69,10 @@ export default function Header() {
     }
   };
 
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalItems = cart.reduce(
+    (sum: number, item: { quantity?: number }) => sum + (item.quantity ?? 0),
+    0
+  );
 
   // Tránh lỗi Render phía Server
   if (!mounted) return <header className="bg-[#ee4d2d] w-full h-[120px] shadow-lg"></header>;
@@ -105,8 +108,10 @@ export default function Header() {
                 )}
                 <UserButton afterSignOutUrl="/" />
               </div>
-              <ThemeToggle />
             </SignedIn>
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
           </ul>
         </div>
       </div>
@@ -131,14 +136,16 @@ export default function Header() {
           </button>
         </form>
 
-        <Link href="/cart" className="relative p-2 flex-shrink-0 group">
-          <FaCartPlus className="text-2xl md:text-3xl group-hover:scale-110 transition-transform" />
-          {totalItems > 0 && (
-            <span className="absolute top-0 right-0 bg-white text-[#ee4d2d] text-[10px] px-1.5 rounded-full font-bold border border-[#ee4d2d] shadow-sm leading-none animate-pulse">
-              {totalItems}
-            </span>
-          )}
-        </Link>
+        <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+          <Link href="/cart" className="relative p-2 group">
+            <FaCartPlus className="text-2xl md:text-3xl group-hover:scale-110 transition-transform" />
+            {totalItems > 0 && (
+              <span className="absolute top-0 right-0 bg-white text-[#ee4d2d] text-[10px] px-1.5 rounded-full font-bold border border-[#ee4d2d] shadow-sm leading-none animate-pulse">
+                {totalItems}
+              </span>
+            )}
+          </Link>
+        </div>
       </div>
     </header>
   );

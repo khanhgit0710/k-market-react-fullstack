@@ -1,10 +1,10 @@
-import { auth } from "@clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import  Cart  from "@/lib/models/Cart";
 import { NextResponse } from "next/server";
 
-export async function GET() {
-  const { userId } = await auth();
+export async function GET(req: Request) {
+  const { userId } = getAuth(req);
   if (!userId) return NextResponse.json({ items: [] });
 
   await connectDB();
@@ -13,7 +13,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { userId } = await auth();
+  const { userId } = getAuth(req);
   const { items } = await req.json(); // Mảng items từ Zustand
   
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -10,6 +10,11 @@ import { FaTrashAlt, FaMinus, FaPlus, FaShoppingCart } from "react-icons/fa";
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, getTotalPrice } = useCartStore();
   const [mounted, setMounted] = useState(false);
+  const subTotal = getTotalPrice();
+  const freeShipThreshold = 1000000;
+  const progressToFreeShip = Math.min(100, Math.round((subTotal / freeShipThreshold) * 100));
+  const remainingForFreeShip = Math.max(0, freeShipThreshold - subTotal);
+  const estimatedDiscount = Math.round(subTotal * 0.05);
 
   // Fix lỗi Hydration (đợi giao diện khớp với LocalStorage)
   useEffect(() => {
@@ -31,6 +36,22 @@ export default function CartPage() {
           <div className="flex flex-col lg:flex-row gap-6">
             {/* DANH SÁCH SẢN PHẨM TRONG GIỎ */}
             <div className="flex-1 space-y-4">
+              <div className="bg-white border border-orange-100 rounded-sm px-4 py-3 text-sm text-gray-600">
+                {remainingForFreeShip > 0 ? (
+                  <p>
+                    Mua thêm <span className="font-bold text-[#ee4d2d]">{remainingForFreeShip.toLocaleString()}đ</span> để được freeship.
+                  </p>
+                ) : (
+                  <p className="font-semibold text-green-600">Bạn đã đạt mốc freeship.</p>
+                )}
+                <div className="mt-2 h-2 rounded-full bg-gray-100 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-orange-400 to-orange-600 transition-all duration-300"
+                    style={{ width: `${progressToFreeShip}%` }}
+                  />
+                </div>
+              </div>
+
               {cart.map((item) => (
                 <div key={item._id} className="bg-white p-4 rounded-sm shadow-sm flex items-center gap-4 border border-gray-100 transition-all hover:border-orange-200">
                   <img src={item.image} className="w-20 h-20 object-contain bg-gray-50 p-1" alt={item.name} />
@@ -71,14 +92,28 @@ export default function CartPage() {
 
             {/* TỔNG TIỀN & THANH TOÁN */}
             <div className="w-full lg:w-[350px] bg-white p-6 rounded-sm shadow-md h-fit sticky top-28 border-t-4 border-orange-500">
-              <div className="flex justify-between items-center mb-6">
+              <div className="space-y-2 mb-6">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-500 font-medium">Tạm tính:</span>
+                  <span className="font-semibold">{subTotal.toLocaleString()}đ</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-500 font-medium">Ưu đãi tạm tính:</span>
+                  <span className="font-semibold text-green-600">-{estimatedDiscount.toLocaleString()}đ</span>
+                </div>
+                <div className="h-px bg-gray-100 my-1" />
+                <div className="flex justify-between items-center">
                 <span className="text-gray-500 font-medium">Tổng cộng ({cart.length} món):</span>
-                <span className="text-2xl font-black text-[#ee4d2d]">{getTotalPrice().toLocaleString()}đ</span>
+                <span className="text-2xl font-black text-[#ee4d2d]">{(subTotal - estimatedDiscount).toLocaleString()}đ</span>
+                </div>
               </div>
               
               <button className="w-full bg-[#ee4d2d] text-white py-3.5 rounded-sm font-bold uppercase hover:bg-[#d73211] transition-all shadow-lg active:scale-95 mb-4">
                 Mua hàng ngay
               </button>
+              <Link href="/" className="block text-center text-sm font-semibold text-[#ee4d2d] hover:underline mb-4">
+                Tiếp tục mua sắm
+              </Link>
               
               <div className="space-y-2 border-t pt-4">
                  <p className="text-[11px] text-gray-400 italic text-center">Giao hàng nhanh từ 2-4 ngày</p>
